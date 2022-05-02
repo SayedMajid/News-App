@@ -10,8 +10,39 @@ function newsIn(){
     
     fetch(`https://masai-mock-api.herokuapp.com/news/top-headlines?country=${x}`)
     .then((res) => res.json())
-    .then((data) => console.log(data.articles))
+    .then((data) => append(data.articles))
     .catch(err => console.log('Error: ', err))
+
+    function append(x){
+        x.forEach(el => {
+            let results = document.getElementById('results')
+
+            let mainBox = document.createElement('div')
+            mainBox.style.display = 'flex';
+
+            let imgBox = document.createElement('div')
+            imgBox.style.height = '300px'
+            imgBox.style.width = '300px'
+
+            let textBox = document.createElement('div')
+
+            let img = document.createElement('img')
+            img.src = el.urlToImage
+            img.style.height = '100%'
+            img.style.width = '100%'
+
+            let title = document.createElement('h3')
+            title.textContent = el.title
+
+            let script = document.createElement('p')
+            script.textContent = el.description
+
+            imgBox.append(img)
+            textBox.append(title, script)
+            mainBox.append(imgBox, textBox)
+            results.append(mainBox)
+        });
+    }
 }
 
 document.getElementById('ch').addEventListener('click', newsCh)
